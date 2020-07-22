@@ -10,7 +10,8 @@ namespace pso_binario
     {
         static void Main(string[] args)
         {
-            
+            Enjambre pry = new Enjambre(10);
+            pry.Algoritmo();
         }
     }
 }
