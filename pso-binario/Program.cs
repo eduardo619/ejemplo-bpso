@@ -11,7 +11,10 @@ namespace pso_binario
         static void Main(string[] args)
         {
             Enjambre pry = new Enjambre(10);
-            pry.Algoritmo();
+            Console.WriteLine("¿Cuantas iteraciones desea?");
+            int it = int.Parse(Console.ReadLine());
+            Console.WriteLine(pry.Algoritmo(it));
+            Console.ReadKey();
         }
     }
 }

@@ -1,8 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace pso_binario
 {
@@ -26,13 +22,16 @@ namespace pso_binario
         public Particula()
         {
             valores = new int[8];
-            rand = new Random((int)DateTime.Now.Ticks);
         }
 
         public void Inicializar()
         {
+            rand = new Random((int)DateTime.Now.Ticks);
+
             for (int i = 0; i < valores.Length; i++)
+            {
                 valores[i] = rand.Next(0, 2);
+            }
         }
     }
 }
