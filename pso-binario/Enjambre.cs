@@ -1,7 +1,6 @@
 ﻿using System;
 using System.IO;
 using System.Text;
-using System.Xml.Linq;
 
 namespace pso_binario
 {
@@ -9,7 +8,8 @@ namespace pso_binario
     {
         private const double w = 0.721;
         private const int c1 = 2, c2 = 2, n_dimensiones = 8;
-        private int r1, r2, g, n_particulas;
+        private int g, n_particulas;
+        private double r1, r2;
         private Particula[] X, P; //Poblacion, memoria de BPSO
         private Random random;
         private double[,] velocidades;
@@ -27,8 +27,8 @@ namespace pso_binario
             for (int i = 0; i < X.Length; i++)
                 X[i] = new Particula();
 
-            r1 = random.Next(0, 2);
-            r2 = random.Next(0, 2);
+            r1 = random.NextDouble();
+            r2 = random.NextDouble();
             csv_content = new StringBuilder();
         }
 
@@ -61,12 +61,19 @@ namespace pso_binario
 
                     for (int j = 0; j < this.n_particulas; j++)
                         if (this.Maximizar(this.P[j].Valores) > this.Maximizar(this.P[g].Valores))
-                            g = this.SeleccionarVecino(j);
-                            //g = j;
+                            //g = this.SeleccionarVecino(j);
+                            g = j;
 
                     for (int d = 0; d < n_dimensiones; d++)
                     {
                         this.velocidades[i, d] = w * this.velocidades[i, d] + c1 * r1 * (this.P[i].Valores[d] - this.X[i].Valores[d]) + c2 * r2 * (this.P[g].Valores[d] - this.X[i].Valores[d]);
+
+                        //Propuesta 1
+                        //if(random.NextDouble < this.prob_mutacion) { this.velocidades[i, d] = -this-velocidades[i, d] } 
+
+                        //Propuesta 2
+                        //
+
 
                         if (random.NextDouble() < this.Sigmoide(this.velocidades[i, d]))
                             this.X[i].Valores[d] = 1;
@@ -93,7 +100,7 @@ namespace pso_binario
             if (vecino_inf > -1)
                 fit_v_inf = this.Maximizar(this.P[vecino_inf].Valores);
 
-            if (!(vecino_sup > (this.n_particulas - 1)))
+            if (vecino_sup <= (this.n_particulas - 1))
                 fit_v_sup = this.Maximizar(this.P[vecino_sup].Valores);
 
             if (fit_v_inf > fit_v_sup)
